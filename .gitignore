@@ -1,0 +1,80 @@
+# Compiled class files
+*.class
+bin/
+target/
+
+# Package files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# IDE files
+.idea/
+.vscode/
+.settings/
+.classpath
+.project
+*.iml
+*.iws
+*.ipr
+.factorypath
+nbproject/
+nb-configuration.xml
+nbactions.xml
+
+# Generated files
+*.bin
+encoded.*
+decoded.*
+test_*.txt
+test_*.bin
+
+# Build directories
+build/
+out/
+
+# LaTeX generated files
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.dvi
+*.pdf
+
+# Java crash logs
+hs_err_pid*
+
+# Backup files
+*~
+*.bak
+*.swp
+*.swo
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Project-specific output files
+test_encoded.bin
+test_decoded.txt
+visualization_screenshot.png
+
+# Log files
+*.log
+logs/
+
+# Virtual machine crash logs
+hs_err_pid*
