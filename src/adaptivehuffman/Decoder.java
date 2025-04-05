@@ -1,79 +1,66 @@
 package adaptivehuffman;
 
 /**
- * This class handles the decoding process for our Adaptive Huffman implementation.
- * It takes a binary string (encoded text) and converts it back to the original text.
+ * handles decoding process for adaptive huffman
  */
 public class Decoder {
-    HuffmanTree tree;  // Reference to our Huffman tree
+    HuffmanTree tree;
 
     /**
-     * Creates a new decoder using the provided tree
+     * creates decoder with a huffman tree
      */
     public Decoder(HuffmanTree tree) {
         this.tree = tree;
     }
 
     /**
-     * Decodes a binary string back to the original text.
-     * 
-     * The process:
-     * 1. Start at the root of the tree
-     * 2. Follow the path specified by the bits until reaching a leaf node
-     * 3. If we reach the NYT node, read the next 8 bits as an ASCII character
-     * 4. If we reach a character node, output that character
-     * 5. Update the tree just like in the encoding process
-     * 6. Start over from the root for the next character
-     * 
-     * This was one of the trickier parts to get right, especially edge cases.
+     * decodes binary string back to original text
+     * this was really tricky to get right
      */
     public String decode(String bits) {
         String decoded = "";
         Node current = tree.root;
         int i = 0;
 
-        // Handle empty string case
+        // empty string case
         if (bits.isEmpty()) {
             return "";
         }
 
         while (i <= bits.length()) {
-            // When we reach a leaf node, process it
+            // leaf node found
             if (current.isLeaf()) {
                 if (current == tree.NYT) {
-                    // This is the NYT node, so read the next 8 bits as an ASCII character
-                    if (i + 8 > bits.length()) break;  // Not enough bits left
+                    // NYT node - read 8 bits as ASCII
+                    if (i + 8 > bits.length()) break;
                     
                     String asciiBits = bits.substring(i, i + 8);
                     char c = (char)Integer.parseInt(asciiBits, 2);
                     decoded += c;
-                    tree.insertNewSymbol(c);  // Add this new symbol to the tree
-                    i += 8;  // Skip past the ASCII bits
+                    tree.insertNewSymbol(c);
+                    i += 8;
                 } else {
-                    // This is a character node, output its symbol
+                    // character node - output symbol
                     decoded += current.symbol;
-                    tree.updateExistingSymbol(current.symbol);  // Update its frequency
+                    tree.updateExistingSymbol(current.symbol);
                 }
                 
-                // Reset to the root for the next character
+                // reset to root for next character
                 current = tree.root;
                 
-                // Break if we've consumed all bits and processed the last node
                 if (i >= bits.length()) {
                     break;
                 }
             } else {
-                // We're at an internal node, navigate based on the current bit
+                // internal node - navigate based on bit
                 if (i < bits.length()) {
                     if (bits.charAt(i) == '0') {
-                        current = current.left;  // 0 = go left
+                        current = current.left;
                     } else {
-                        current = current.right;  // 1 = go right
+                        current = current.right;
                     }
-                    i++;  // Move to the next bit
+                    i++;
                 } else {
-                    // We've run out of bits but haven't reached a leaf
-                    // This shouldn't happen with valid input
                     break;
                 }
             }

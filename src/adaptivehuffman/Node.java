@@ -1,39 +1,33 @@
 package adaptivehuffman;
 
 /**
- * This class represents a node in our Adaptive Huffman Tree.
- * Each node stores a character, its frequency (weight), pointers to children and parent,
- * and an order number used for maintaining the sibling property.
+ * represents a node in the adaptive huffman tree
  */
 public class Node {
-    char symbol;     // The character this node represents (only meaningful for leaf nodes)
-    int weight;      // How many times this symbol has appeared so far
-    Node left, right, parent;  // Connections to other nodes in the tree
-    int order;       // Order number for maintaining the sibling property
+    char symbol;     // character this node represents
+    int weight;      // frequency count
+    Node left, right, parent;  // tree links
+    int order;       // order number for sibling property
     
     /**
-     * Creates a new node with the given symbol, weight, and order
-     * This constructor is called when building/updating the tree
+     * creates a new node
      */
     public Node(char symbol, int weight, int order) {
         this.symbol = symbol;
         this.weight = weight;
         this.order = order;
-        left = right = parent = null;  // Initialize all links to null
+        left = right = parent = null;
     }
 
     /**
-     * Checks if this node is a leaf node (has no children)
-     * Leaf nodes represent actual characters in our tree
+     * checks if node is a leaf (has no children)
      */
     public boolean isLeaf() {
         return (left == null && right == null);
     }
     
     /**
-     * Checks if this node is the NYT (Not Yet Transmitted) node
-     * The NYT node is a special leaf node with weight 0 that represents characters
-     * not yet seen in the input
+     * checks if node is the NYT node (not yet transmitted)
      */
     public boolean isNYT() {
         return isLeaf() && weight == 0;
