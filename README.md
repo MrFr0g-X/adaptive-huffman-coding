@@ -63,6 +63,8 @@ Adaptive Huffman coding is based on several key principles:
 5. Update the tree exactly as the encoder did
 6. Continue until all bits are processed
 
+**Important Note:** While the algorithm description suggests using the "same tree," proper implementation requires separate tree instances for encoding and decoding that evolve independently but identically through the same input sequence. This ensures proper adaptive behavior on both ends.
+
 ## ✨ Features
 
 - **Complete FGK Implementation**: Full implementation of the Adaptive Huffman algorithm
@@ -70,7 +72,9 @@ Adaptive Huffman coding is based on several key principles:
 - **Performance Optimizations**: Path caching, simplified mode for complex inputs
 - **Interactive Visualization**: Real-time tree evolution visualization with JavaFX
 - **Multiple Input Modes**: Process strings, files, or run demos
-- **Comprehensive Testing**: Test cases for various input patterns and edge cases
+- **Improved Character Handling**: Special support for Unicode characters and full 16-bit encoding
+- **Separate Tree Instances**: Proper implementation using independent trees for encoding and decoding
+- **Comprehensive Testing**: Test cases for various input patterns, edge cases and special characters
 
 ## 🛠️ Implementation Details
 
@@ -216,6 +220,16 @@ To handle complex inputs and edge cases, the implementation includes:
 5. **Auto-Recovery** 🔄
      - Rebuilds the tree if corruption is detected
      - Preserves character weights during reconstruction
+
+6. **Separate Trees for Encoding/Decoding** 🌲🌲
+     - Independent tree instances used for encoding and decoding
+     - Both trees evolve identically but separately through the same sequences
+     - Essential for proper adaptive coding behavior
+
+7. **Unicode Character Support** 🌐
+     - Direct 16-bit encoding for non-ASCII characters
+     - Special handling for extended Unicode code points
+     - Preserves fidelity with international character sets  
 
 ### Visualization Component
 
@@ -375,11 +389,23 @@ Verification: SUCCESS ✓
 
 Analysis: Good compression (35.23%) with repeated patterns.
 
+#### Test Case 5: Special Characters
+
+```
+Input: €¥₹♠♣★↑↓←→
+Original size (bits): 80
+Encoded size (bits): 160
+Match?: true
+```
+
+Analysis: For special Unicode characters, a direct 16-bit encoding approach is used rather than adaptive Huffman. This ensures compatibility with characters outside the ASCII range at the cost of compression efficiency.
+
 ### Performance Analysis
 
 - **Best Case** 🚀: Highly repetitive content (~70-80% compression)
 - **Average Case** ⚡: Mixed content with repeats (~30-60% compression)
 - **Worst Case** ⚠️: No repetition (slight expansion due to overhead)
+- **Special Cases**: Unicode characters use direct 16-bit encoding
 
 ## 🔧 Challenges & Solutions
 
@@ -412,6 +438,16 @@ Analysis: Good compression (35.23%) with repeated patterns.
 - Added real-time tree rendering with node details
 - Implemented step-by-step encoding/decoding visualization
 - Added debug output for sibling property validation
+
+### Challenge 4: Separate Trees for Encoding/Decoding
+
+**Problem:** Initially the same tree instance was shared between encoder and decoder, causing incorrect decoding because the tree state was already modified by encoding.
+
+**Solution:**
+- Implemented separate tree instances for encoding and decoding
+- Ensured both trees evolve through identical steps independently
+- Added test cases to verify correct encoder-decoder separation
+- Validated with various input types including special characters
 
 ## 👥 Contributing
 
